@@ -1,0 +1,45 @@
+{
+  "name": "react-chassis-cli",
+  "version": "0.0.1",
+  "description": "scaffolding tool for React",
+  "main": "index.js",
+  "bin": {
+    "rc-cli": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivelaval/react-chassis-cli.git"
+  },
+  "keywords": [
+    "react",
+    "cli",
+    "nodejs",
+    "npm"
+  ],
+  "author": "Ivan Elias Avila (ivelaval@gmail.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ivelaval/react-chassis-cli/issues"
+  },
+  "homepage": "https://github.com/ivelaval/react-chassis-cli#readme",
+  "dependencies": {
+    "async": "^2.1.4",
+    "chalk": "^2.1.0",
+    "clear": "0.0.1",
+    "clui": "^0.3.6",
+    "commander": "^2.9.0",
+    "figlet": "^1.2.0",
+    "github": "^10.0.0",
+    "inquirer": "^3.2.2",
+    "lodash": "^4.17.4",
+    "minimist": "^1.2.0",
+    "preferences": "^0.2.1",
+    "sendgrid": "^4.7.1",
+    "simple-git": "^1.76.0",
+    "touch": "^3.1.0",
+    "update-notifier": "^2.2.0"
+  }
+}
