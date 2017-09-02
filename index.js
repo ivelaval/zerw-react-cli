@@ -2,62 +2,121 @@
 
 "use strict";
 
-var chalk       = require('chalk');
-var clear       = require('clear');
-var CLI         = require('clui');
-var figlet      = require('figlet');
-var inquirer    = require('inquirer');
-var Preferences = require('preferences');
-var Spinner     = CLI.Spinner;
-var GitHubApi   = require('github');
-var _           = require('lodash');
-var git         = require('simple-git')();
-var touch       = require('touch');
-var fs          = require('fs');
-var program = require('commander');
-var updateNotifier = require("update-notifier");
+const chalk             = require('chalk');
+const clear             = require('clear');
+const CLI               = require('clui');
+const figlet            = require('figlet');
+const inquirer          = require('inquirer');
+const Preferences       = require('preferences');
+const Spinner           = CLI.Spinner;
+const GitHubApi         = require('github');
+const _                 = require('lodash');
+const touch             = require('touch');
+const fs                = require('fs');
+const program           = require('commander');
+const updateNotifier    = require("update-notifier");
+const cmd               = require('node-cmd');
+const rimraf            = require('rimraf');
+const emoji             = require('node-emoji')
 
-var pkg = require("./package.json");
-var files = require('./lib/files');
-var commands = process.argv;
+const pkg               = require('./package.json');
+const files             = require('./lib/files');
+const commands          = process.argv;
+const repositoriesPathHttpsOfChassis = {
+    'Normal'    : 'https://github.com/ivelaval/chassis.git',
+    'Redux'     : 'https://github.com/ivelaval/chassis-redux.git',
+    'Mobx'      : 'https://github.com/ivelaval/chassis-mobx.git'
+};
 
 updateNotifier({packageName: pkg.name, packageVersion: pkg.version, updateCheckInterval:1000}).notify();
 
 clear();
 console.log(
   chalk.magenta(
-    figlet.textSync('RC Cli', { horizontalLayout: 'full' })
+    figlet.textSync('Chassis Cli', { horizontalLayout: 'full' })
   ),
-  chalk.red('\n React Chassis tool\n\n')
+  chalk.red(`\n React scaffolding tool, made with ${emoji.emojify(':heart:')} \n\n`)
 );
 
-function getGithubCredentials(callback) {
-  var questions = [
+var questions = [
     {
-      name: 'finalpath',
-      type: 'input',
-      message: 'Enter your final path for your project react:',
-      default: files.getCurrentDirectoryBase(),
-      validate: function( value ) {
-        if (value.length) {
-          return true;
-        } else {
-          return 'Please enter your final path:';
+        name: 'finalpath',
+        type: 'input',
+        message: 'Enter path where you want to add the project react:',
+        default: process.cwd(),
+        validate: function(value) {
+            if (value.length) {
+                return true;
+            } else {
+                return 'Please enter your final path:';
+            }
         }
-      }
+    },
+    {
+        name: 'architecture',
+        type: 'list',
+        choices: ['Redux', 'Mobx', 'Normal'],
+        message: 'Choose the architecture for your project react:',
+        default: process.cwd(),
+        validate: function(value) {
+            if (value.length) {
+                return true;
+            } else {
+                return 'Please enter your final path:';
+            }
+        }
     }
-  ];
+];
 
-  inquirer.prompt(questions).then(callback);
-}
+var countdown = new Spinner('', ['⣾','⣽','⣻','⢿','⡿','⣟','⣯','⣷']);
 
-getGithubCredentials(function(){
-  console.log("callback", arguments);
-  var status = new Spinner('Authenticating you, please wait...');
-  status.start();
-  //status.stop();
+inquirer.prompt(questions).then((answers) => {
+    console.log(answers);
+    countdown.start();
+    countdown.message(chalk.magenta('Downloading React Chassis...'));
+
+    var localPath = `${answers.finalpath}/react-chassis`;
+    if(files.directoryExists(localPath)) {
+        console.log(`The folder ${localPath} already exist`);
+        process.exit();
+        return false;
+    }
+
+    cmd.get(
+        `git clone ${repositoriesPathHttpsOfChassis[answers.architecture]} ${localPath}`,
+        (err, data, stderr) => {
+            if (!err) {
+                rimraf(`${localPath}/.git`, () => {
+
+                    countdown.message(chalk.magenta('The React Chasis was created correctly.'));
+                    countdown.message(chalk.magenta('Installing packages...'));
+                    
+                        cmd.get(
+                            `cd ${localPath}
+                             npm install`,
+                            (err, data, stderr) => {
+                                if (!err) {
+                                    countdown.stop();
+                                    fs.unlinkSync(`${localPath}/package-lock.json`);
+                                    console.log(chalk.green('All node packages was installed.'));
+                                } else {
+                                    console.log('there was a error', err);
+                                    countdown.stop();
+                                }
+                            }
+                        );
+
+                });
+            } else {
+                console.log('there was a error', err);
+                countdown.stop();
+            }
+        }
+    );
+
 });
 
+/*
 program
 .version(pkg.version)
 .command('gen [directory]')
@@ -85,3 +144,4 @@ module.exports = {
     }
   }
 };
+*/
