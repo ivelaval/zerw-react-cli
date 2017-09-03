@@ -1,4 +1,5 @@
-# react-chassis-cli
+# Chassis cli
+React scaffolding tool, made with love.
 
 ## Roadmap
 * Refactor to class es6
