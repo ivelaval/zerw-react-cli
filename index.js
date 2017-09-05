@@ -17,11 +17,12 @@ const program           = require('commander');
 const updateNotifier    = require("update-notifier");
 const cmd               = require('node-cmd');
 const rimraf            = require('rimraf');
-const emoji             = require('node-emoji')
+const emoji             = require('node-emoji');
 
 const pkg               = require('./package.json');
 const files             = require('./lib/files');
 const commands          = process.argv;
+
 const repositoriesPathHttpsOfChassis = {
     'Normal'    : 'https://github.com/ivelaval/chassis.git',
     'Redux'     : 'https://github.com/ivelaval/chassis-redux.git',
@@ -90,7 +91,7 @@ inquirer.prompt(questions).then((answers) => {
 
                     countdown.message(chalk.magenta('The React Chasis was created correctly.'));
                     countdown.message(chalk.magenta('Installing packages...'));
-                    
+
                         cmd.get(
                             `cd ${localPath}
                              npm install`,
