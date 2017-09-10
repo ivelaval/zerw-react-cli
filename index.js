@@ -23,18 +23,18 @@ const pkg               = require('./package.json');
 const files             = require('./lib/files');
 const commands          = process.argv;
 
-const repositoriesPathHttpsOfChassis = {
-    'Normal'    : 'https://github.com/vennet-engineering/chassis.git',
-    'Redux'     : 'https://github.com/vennet-engineering/chassis-redux.git',
-    'Mobx'      : 'https://github.com/vennet-engineering/chassis-mobx.git'
+const repositoriesPathHttpsOfZerw = {
+    'Normal'    : 'https://github.com/vennet-engineering/zerw-react.git',
+    'Redux'     : 'https://github.com/vennet-engineering/zerw-react-redux.git',
+    'Mobx'      : 'https://github.com/vennet-engineering/zerw-react-mobx.git'
 };
 
 updateNotifier({packageName: pkg.name, packageVersion: pkg.version, updateCheckInterval:1000}).notify();
 
 clear();
 console.log(
-  chalk.magenta(
-    figlet.textSync('Chassis Cli', { horizontalLayout: 'full' })
+  chalk.green(
+    figlet.textSync('Zerw Cli', { horizontalLayout: 'full' })
   ),
   chalk.red(`\n React scaffolding tool, made with ${emoji.emojify(':heart:')}`),
   chalk.yellow(`\n Version: ${pkg.version} \n\n`)
@@ -76,7 +76,7 @@ inquirer.prompt(questions).then((answers) => {
     countdown.start();
     countdown.message(chalk.magenta('Downloading React Chassis...'));
 
-    var localPath = `${answers.finalpath}/react-chassis`;
+    var localPath = `${answers.finalpath}/zerw-react`;
     if(files.directoryExists(localPath)) {
         console.log(`The folder ${localPath} already exist`);
         process.exit();
@@ -84,12 +84,12 @@ inquirer.prompt(questions).then((answers) => {
     }
 
     cmd.get(
-        `git clone ${repositoriesPathHttpsOfChassis[answers.architecture]} ${localPath}`,
+        `git clone ${repositoriesPathHttpsOfZerw[answers.architecture]} ${localPath}`,
         (err, data, stderr) => {
             if (!err) {
                 rimraf(`${localPath}/.git`, () => {
 
-                    countdown.message(chalk.magenta('The React Chasis was created correctly.'));
+                    countdown.message(chalk.magenta('The Zerw React was created correctly.'));
                     countdown.message(chalk.magenta('Installing node packages necessary...'));
 
                         cmd.get(
