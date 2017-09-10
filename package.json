@@ -4,7 +4,7 @@
   "description": "Scaffolding tool for React",
   "main": "index.js",
   "bin": {
-    "chassis": "./index.js"
+    "cc": "./index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

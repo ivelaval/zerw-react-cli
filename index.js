@@ -24,9 +24,9 @@ const files             = require('./lib/files');
 const commands          = process.argv;
 
 const repositoriesPathHttpsOfChassis = {
-    'Normal'    : 'https://github.com/vennet-engineering/chassis.git',
-    'Redux'     : 'https://github.com/vennet-engineering/chassis-redux.git',
-    'Mobx'      : 'https://github.com/vennet-engineering/chassis-mobx.git'
+    'Normal'    : 'https://github.com/ivelaval/chassis.git',
+    'Redux'     : 'https://github.com/ivelaval/chassis-redux.git',
+    'Mobx'      : 'https://github.com/ivelaval/chassis-mobx.git'
 };
 
 updateNotifier({packageName: pkg.name, packageVersion: pkg.version, updateCheckInterval:1000}).notify();
@@ -72,6 +72,7 @@ var questions = [
 var countdown = new Spinner('', ['⣾','⣽','⣻','⢿','⡿','⣟','⣯','⣷']);
 
 inquirer.prompt(questions).then((answers) => {
+    console.log(answers);
     countdown.start();
     countdown.message(chalk.magenta('Downloading React Chassis...'));
 
@@ -89,7 +90,7 @@ inquirer.prompt(questions).then((answers) => {
                 rimraf(`${localPath}/.git`, () => {
 
                     countdown.message(chalk.magenta('The React Chasis was created correctly.'));
-                    countdown.message(chalk.magenta('Installing node packages necessary...'));
+                    countdown.message(chalk.magenta('Installing packages...'));
 
                         cmd.get(
                             `cd ${localPath}
