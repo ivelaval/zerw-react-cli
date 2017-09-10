@@ -24,9 +24,9 @@ const files             = require('./lib/files');
 const commands          = process.argv;
 
 const repositoriesPathHttpsOfChassis = {
-    'Normal'    : 'https://github.com/ivelaval/chassis.git',
-    'Redux'     : 'https://github.com/ivelaval/chassis-redux.git',
-    'Mobx'      : 'https://github.com/ivelaval/chassis-mobx.git'
+    'Normal'    : 'https://github.com/vennet-engineering/chassis.git',
+    'Redux'     : 'https://github.com/vennet-engineering/chassis-redux.git',
+    'Mobx'      : 'https://github.com/vennet-engineering/chassis-mobx.git'
 };
 
 updateNotifier({packageName: pkg.name, packageVersion: pkg.version, updateCheckInterval:1000}).notify();
@@ -36,7 +36,8 @@ console.log(
   chalk.magenta(
     figlet.textSync('Chassis Cli', { horizontalLayout: 'full' })
   ),
-  chalk.red(`\n React scaffolding tool, made with ${emoji.emojify(':heart:')} \n\n`)
+  chalk.red(`\n React scaffolding tool, made with ${emoji.emojify(':heart:')}`),
+  chalk.yellow(`\n Version: ${pkg.version} \n\n`)
 );
 
 var questions = [
@@ -72,7 +73,6 @@ var questions = [
 var countdown = new Spinner('', ['⣾','⣽','⣻','⢿','⡿','⣟','⣯','⣷']);
 
 inquirer.prompt(questions).then((answers) => {
-    console.log(answers);
     countdown.start();
     countdown.message(chalk.magenta('Downloading React Chassis...'));
 
@@ -90,7 +90,7 @@ inquirer.prompt(questions).then((answers) => {
                 rimraf(`${localPath}/.git`, () => {
 
                     countdown.message(chalk.magenta('The React Chasis was created correctly.'));
-                    countdown.message(chalk.magenta('Installing packages...'));
+                    countdown.message(chalk.magenta('Installing node packages necessary...'));
 
                         cmd.get(
                             `cd ${localPath}
@@ -116,33 +116,3 @@ inquirer.prompt(questions).then((answers) => {
     );
 
 });
-
-/*
-program
-.version(pkg.version)
-.command('gen [directory]')
-.description('Select directory ')
-.option('-l, --list [list]', 'list of customers in CSV file')
-.parse(commands);
-
-console.log(program.g);
-process.exit();
-
-if (files.directoryExists('.git')) {
-  console.log(chalk.red('Already a git repository!'));
-  process.exit();
-}
-
-module.exports = {
-  getCurrentDirectoryBase : function() {
-    return path.basename(process.cwd());
-  },
-  directoryExists : function(filePath) {
-    try {
-      return fs.statSync(filePath).isDirectory();
-    } catch (err) {
-      return false;
-    }
-  }
-};
-*/
